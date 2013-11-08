@@ -1,2 +1,13 @@
 USERNAME = "user1234"
 PASSWORD = "password"
+FROM_EMAIL = "hello@domain.com"
+TO_EMAILS = ["your@email.com"]
+SUBJECT = "New SBE Study!"
+TEXT = "sbe.sona-systems.com/default.aspx"
+SERVER = "localhost"
+MESSAGE = """
+From: %s
+To: %s
+Subject: %s
+%s
+"""%(FROM_EMAIL, ", ".join(TO_EMAILS), SUBJECT, TEXT)

@@ -4,10 +4,8 @@ import urllib, urllib2
 import re
 import cookielib
 import os
+import smtplib
 
-def sendEmail():
-	print "found new"
-	
 cj = cookielib.CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
 
@@ -18,7 +16,7 @@ REGEX_VIEWSTATE = '__VIEWSTATE" value="(.*)"';
 REGEX_EVENTVALIDATION = '__EVENTVALIDATION" value="(.*)"';
 REGEX_SURVEY = '<a id="ctl00_ContentPlaceHolder1_repStudentStudies_ctl\d+_HyperlinkStudentTimeSlot" href="exp_info.aspx\?experiment_id=(\d+)">Timeslots Available</a>'
 
-DB_FILE = "seen.json"
+DB_FILE = "old.json"
 
 response_initial = opener.open(URL_LOGIN).read()
 
@@ -46,7 +44,10 @@ for open_survey in re.findall(REGEX_SURVEY, html):
 	survey_id = int(open_survey)
 	if not survey_id in all_seen:
 		all_seen.append(survey_id)
-		sendEmail()
+		server = smtplib.SMTP(SERVER)
+		server.sendmail(FROM_EMAIL, TO_EMAILS, MESSAGE)
+		server.quit()
+
 
 with open(DB_FILE, 'w') as f:
 	json.dump(all_seen, f)
