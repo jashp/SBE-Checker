@@ -55,4 +55,4 @@ for open_survey in re.findall(REGEX_SURVEY, html):
 
 # save changes
 with open(DB_FILE, 'w') as f:
-	json.dump(all_seen, f)
+	json.dump(old, f)
